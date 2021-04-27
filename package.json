@@ -1,0 +1,16 @@
+{
+  "name": "tradebot-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "node-binance-api": "^0.12.5"
+  },
+  "scripts": {
+    "start": "node app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
