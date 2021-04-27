@@ -1,6 +1,8 @@
 const events = require('events');
 const Binance = require('node-binance-api');
 const binance = new Binance();
+// all this will go into a config. so each symbol settings will link to a "api" id (ie: "binance-william" and then use that for its actions
+// but keeping it simple for now
 binance.options({
     APIKEY: 'xxx',
     APISECRET: 'xxx',
@@ -34,8 +36,11 @@ const tradeEmitter = new events.EventEmitter();
 // creating an event for each trade, trade.<symbol>.
 traders.forEach(function (trade_obj) {
     let event_name = "trade." + trade_obj.symbol.toLowerCase();
-    console.log(event_name);
+    // i like using events for something like this. this registers each "class" to action on the event.
+    // dont know what its called
     tradeEmitter.on(event_name, (price) => {
+        // dont want it triggering the same "buy" / "sell" condition cause the websocket feeds us too much infos
+        // too quickly. so we limit it to only be able to be ina  running state or not for single execution
         if (!trade_obj.running){
             trade_obj.run(price);
         }
@@ -48,7 +53,8 @@ traders.forEach(function (trade_obj) {
 
 console.info(interested_symbols);
 
-// we run the websocket guy. still need to figure out which we want to use for what
+// we run the websocket guy. still need to figure out which we want to use for what. coppied from the github page. looks like
+// it gives me a price so... stupid me thinks this is important
 binance.websockets.trades(interested_symbols, (trades) => {
     let {e: eventType, E: eventTime, s: symbol, p: price, q: quantity, m: maker, a: tradeId} = trades;
     tradeEmitter.emit('trade.' + symbol.toLowerCase(), price);
