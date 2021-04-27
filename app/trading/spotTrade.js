@@ -5,6 +5,8 @@ class spotTrade {
     constructor() {
         this.id = null;
         this.symbol = null;
+        this.times_run = 0;
+        this.times_error = 0;
 
         // just to make sure the settings array is populated correctly (see this.settings comment)
         this.default_settings = {
@@ -45,9 +47,14 @@ class spotTrade {
 
             let timer_end = performance.now();
             var time_taken = timer_end - timer_start;
-            console.log("ran " + this.id + " for symbol " + this.symbol + " | price: " + price + " | timer: "+ time_taken + " | price1:" + price1);
+            console.log("ran " + this.id + " for symbol " + this.symbol + " | price: " + price + " | timer: "+ time_taken + " | price1: " + price1 + " | ran: " + this.times_run + " | error: " + this.times_error);
+
+            // just for some stats
+            this.times_run = this.times_run + 1;
 
         } catch (error) {
+            // just for some stats
+            this.times_error = this.times_error + 1;
             // should add a timeout to it so that it doesnt run again for x seconds.
             // but i was too lazy to do it...
             console.log(error.message);
